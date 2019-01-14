@@ -16,6 +16,25 @@
 
 package net.micode.notes.ui;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import net.micode.notes.R;
+import net.micode.notes.data.Notes;
+import net.micode.notes.data.Notes.TextNote;
+import net.micode.notes.model.WorkingNote;
+import net.micode.notes.model.WorkingNote.NoteSettingChangedListener;
+import net.micode.notes.tool.DataUtils;
+import net.micode.notes.tool.ResourceParser;
+import net.micode.notes.tool.ResourceParser.TextAppearanceResources;
+import net.micode.notes.ui.DateTimePickerDialog.OnDateTimeSetListener;
+import net.micode.notes.ui.NoteEditText.OnTextViewChangeListener;
+import net.micode.notes.widget.MyFileUtils;
+import net.micode.notes.widget.NoteWidgetProvider_2x;
+import net.micode.notes.widget.NoteWidgetProvider_4x;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
@@ -29,6 +48,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -47,29 +67,12 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import net.micode.notes.R;
-import net.micode.notes.data.Notes;
-import net.micode.notes.data.Notes.TextNote;
-import net.micode.notes.model.WorkingNote;
-import net.micode.notes.model.WorkingNote.NoteSettingChangedListener;
-import net.micode.notes.tool.DataUtils;
-import net.micode.notes.tool.ResourceParser;
-import net.micode.notes.tool.ResourceParser.TextAppearanceResources;
-import net.micode.notes.ui.DateTimePickerDialog.OnDateTimeSetListener;
-import net.micode.notes.ui.NoteEditText.OnTextViewChangeListener;
-import net.micode.notes.widget.NoteWidgetProvider_2x;
-import net.micode.notes.widget.NoteWidgetProvider_4x;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class NoteEditActivity extends Activity implements OnClickListener,
@@ -148,17 +151,31 @@ public class NoteEditActivity extends Activity implements OnClickListener,
 
     private String mUserQuery;
     private Pattern mPattern;
+    private FrameLayout flContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.note_edit);
+        
+        //文件安全限制处理
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
 
         if (savedInstanceState == null && !initActivityState(getIntent())) {
             finish();
             return;
         }
         initResources();
+        
+        flContent = (FrameLayout) findViewById(R.id.fl_content);
+        //分享图片
+        findViewById(R.id.btn_share).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				MyFileUtils.shareImageToQQ(MyFileUtils.saveBitmap(flContent), NoteEditActivity.this);
+			}
+		});
     }
 
     /**

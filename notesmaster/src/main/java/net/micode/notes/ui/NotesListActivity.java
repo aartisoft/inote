@@ -534,6 +534,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
     }
 
     private void openNode(NoteItemData data) {
+    	//TODO 这里放加密的东西
         Intent intent = new Intent(this, NoteEditActivity.class);
         intent.setAction(Intent.ACTION_VIEW);
         intent.putExtra(Intent.EXTRA_UID, data.getId());

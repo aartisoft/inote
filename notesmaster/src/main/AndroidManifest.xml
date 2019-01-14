@@ -19,7 +19,7 @@
     package="net.micode.notes"
     android:versionCode="1"
     android:versionName="0.1" >
-
+    <!-- 申请系统资源的android权限，添加摄像头功能需要添加二层节点 <uses-feature>-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -30,6 +30,8 @@
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
+    <uses-feature android:name="android.hardware.camera2" android:required="true"/>
+    <!--设置安卓程序图标-->
     <application
         android:icon="@drawable/icon_app"
         android:label="@string/app_name" >
@@ -109,7 +111,11 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_4x_info" />
         </receiver>
+<!--定义了2个receiver和1个activity。用来实现提醒的功能
+    android.intent.action.BOOT_COMPLETED会在Android手机开机后，发送android.intent.action.BOOT_COMPLETED
+    广播，监听这个广播就能监听开机。开机之后，就处理已有的便签，逐条比较日期，如果有到期的，就用AlarmManager提醒用户。
 
+-->
         <receiver android:name=".ui.AlarmInitReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

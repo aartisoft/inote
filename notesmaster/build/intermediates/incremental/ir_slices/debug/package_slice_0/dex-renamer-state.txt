@@ -1,0 +1,4 @@
+#Sun Jan 06 09:45:40 CST 2019
+base.0=D\:\\clh\\project\\test\\notesmaster\\build\\intermediates\\transforms\\dexMerger\\debug\\0
+path.0=classes.dex
+renamed.0=classes.dex

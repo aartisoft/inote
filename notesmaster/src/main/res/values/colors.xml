@@ -16,5 +16,17 @@
 -->
 
 <resources>
+    
+    <color name="colorPrimary">#89837F</color>
+    <color name="colorPrimaryDark">#89837F</color>
+    <color name="colorAccent">#89837F</color>
+
+    <!--底部导航栏颜色-->
+    <color name="bottombar">#2055a1</color>
+    <color name="bottombar_textcolot">#44beff</color>
+
+
+    <color name="white">#FFFFFF</color>
+    
     <color name="user_query_highlight">#335b5b5b</color>
 </resources>

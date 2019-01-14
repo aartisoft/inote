@@ -23,6 +23,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+
 import net.micode.notes.R;
 import net.micode.notes.ui.NotesListActivity;
 import net.micode.notes.ui.NotesPreferenceActivity;
